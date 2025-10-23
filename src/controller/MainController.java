@@ -1,5 +1,7 @@
 package controller;
 
 public class MainController {
-    public static void main(String[] args) {}
+    public static void main(String[] args) {
+        System.out.println("Hung");
+    }
 }
