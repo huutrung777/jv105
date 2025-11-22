@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Chỉnh sửa thông tin người dùng</title>
+  <link rel="stylesheet" href="../css/bootstrap.css">
+  <script src="../js/bootstrap.js"></script>
+
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-dark px-3">
+  <span class="navbar-brand mb-0 h1">Admin Dashboard</span>
+</nav>
+
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Chỉnh sửa thông tin người dùng</h4>
+    </div>
+    <div class="card-body">
+      <form>
+        <div class="mb-3">
+          <label class="form-label">Họ tên</label>
+          <input type="text" class="form-control" placeholder="Nhập họ tên...">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" placeholder="Nhập email..." disabled>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Số điện thoại</label>
+          <input type="text" class="form-control" placeholder="Nhập số điện thoại...">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Địa chỉ</label>
+          <input type="text" class="form-control" placeholder="Nhập địa chỉ...">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Vai trò</label>
+          <select class="form-select" disabled>
+            <option>Admin</option>
+            <option>Người dùng</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-success px-4">Lưu thay đổi</button>
+        <button type="reset" class="btn btn-secondary px-4 ms-2">Làm mới</button>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>
