@@ -1,5 +1,5 @@
-create database if not exists quan_ly_ban_hang1;
-use quan_ly_ban_hang1;
+create database if not exists quan_ly_ban_hang2;
+use quan_ly_ban_hang2;
 create table tai_khoan (
     ma_tk int auto_increment primary key,
     ten_dang_nhap varchar(50) unique not null,
@@ -16,16 +16,6 @@ create table nguoi_dung (
     gioi_tinh enum('nam', 'nu', 'khac'),
     ngay_sinh date,
     foreign key (ma_tk) references tai_khoan(ma_tk) on delete cascade
-);
-create table dia_chi (
-    ma_dia_chi int auto_increment primary key,
-    ma_nd int not null,
-    dia_chi varchar(255) not null,
-    phuong_xa varchar(100),
-    quan_huyen varchar(100),
-    tinh_thanh varchar(100),
-    mac_dinh boolean default false,
-    foreign key (ma_nd) references nguoi_dung(ma_nd) on delete cascade
 );
 create table danh_muc (
     ma_dm int auto_increment primary key,
@@ -48,19 +38,14 @@ create table hinh_anh_san_pham (
     duong_dan varchar(255) not null,
     foreign key (ma_sp) references san_pham(ma_sp) on delete cascade
 );
-create table gio_hang (
-    ma_gio_hang int auto_increment primary key,
-    ma_nd int not null,
-    ngay_cap_nhat datetime default current_timestamp,
-    foreign key (ma_nd) references nguoi_dung(ma_nd) on delete cascade
-);
-create table chi_tiet_gio_hang (
-    ma_ct_gh int auto_increment primary key,
-    ma_gio_hang int not null,
-    ma_sp int not null,
-    so_luong int default 1,
-    foreign key (ma_gio_hang) references gio_hang(ma_gio_hang) on delete cascade,
-    foreign key (ma_sp) references san_pham(ma_sp)
+create table thanh_toan (
+    ma_tt int auto_increment primary key,
+    ma_dh int not null,
+    phuong_thuc enum('tien_mat', 'chuyen_khoan', 'vi_dien_tu') default 'tien_mat',
+    so_tien decimal(12,2) not null,
+    ngay_thanh_toan datetime default current_timestamp,
+    trang_thai enum('thanh_cong', 'that_bai', 'cho_xu_ly') default 'cho_xu_ly',
+    foreign key (ma_dh) references don_hang(ma_dh) on delete cascade
 );
 create table don_hang (
     ma_dh int auto_increment primary key,
@@ -71,24 +56,6 @@ create table don_hang (
     dia_chi_giao_hang varchar(255),
     foreign key (ma_nd) references nguoi_dung(ma_nd) on delete cascade
 );
-create table chi_tiet_don_hang (
-    ma_ct_dh int auto_increment primary key,
-    ma_dh int not null,
-    ma_sp int not null,
-    so_luong int not null,
-    don_gia decimal(12,2) not null,
-    foreign key (ma_dh) references don_hang(ma_dh) on delete cascade,
-    foreign key (ma_sp) references san_pham(ma_sp)
-);
-create table thanh_toan (
-    ma_tt int auto_increment primary key,
-    ma_dh int not null,
-    phuong_thuc enum('tien_mat', 'chuyen_khoan', 'vi_dien_tu') default 'tien_mat',
-    so_tien decimal(12,2) not null,
-    ngay_thanh_toan datetime default current_timestamp,
-    trang_thai enum('thanh_cong', 'that_bai', 'cho_xu_ly') default 'cho_xu_ly',
-    foreign key (ma_dh) references don_hang(ma_dh) on delete cascade
-);
 -- Tài khoản
 insert into tai_khoan (ten_dang_nhap, mat_khau, vai_tro)
 values
@@ -96,6 +63,7 @@ values
 ('trung', '123456', 'khachhang'),
 ('hung', '123456', 'khachhang'),
 ('nhat', '123456', 'khachhang');
+
 -- Người dùng
 insert into nguoi_dung (ma_tk, ho_ten, email, so_dien_thoai, gioi_tinh, ngay_sinh)
 values
@@ -103,17 +71,6 @@ values
 (2, 'Nguyễn Hữu Trung', 'trungll60@gmail.com', '0703710434', 'nam', '2000-01-01'),
 (3, 'Nguyễn Hữu Hưng', 'hung@gmail.com', '0905000002', 'nam', '2000-02-02'),
 (4, 'Trần Lê Nhất', 'nhat@gmail.com', '0905000003', 'nam', '2000-03-03');
-
-
--- Địa chỉ
-insert into dia_chi (ma_nd, dia_chi, phuong_xa, quan_huyen, tinh_thanh, mac_dinh)
-values
-(3, '12 Lê Duẩn', 'Hải Châu 1', 'Hải Châu', 'Đà Nẵng', true),
-(4, '100 Nguyễn Huệ', 'Bến Nghé', 'Quận 1', 'TP.HCM', true),
-(5, '25 Nguyễn Văn Linh', 'Thanh Khê Đông', 'Thanh Khê', 'Đà Nẵng', true),
-(1, '01 Trần Phú', 'Hải Châu 2', 'Hải Châu', 'Đà Nẵng', true),
-(2, '99 Lý Thường Kiệt', 'Bến Nghé', 'Quận 1', 'TP.HCM', true),
-(6, '123 Nguyễn Trãi', 'Hòa Cường Bắc', 'Hải Châu', 'Đà Nẵng', true);
 
 -- Danh mục
 insert into danh_muc (ten_dm, mo_ta)
@@ -150,31 +107,11 @@ values
 (9, 'sac65w.jpg'),
 (10, 'logitechmx3s.jpg');
 
--- Giỏ hàng
-insert into gio_hang (ma_nd)
-values
-(3),
-(4);
-
--- Chi tiết giỏ hàng
-insert into chi_tiet_gio_hang (ma_gio_hang, ma_sp, so_luong)
-values
-(1, 1, 1),
-(1, 4, 2),
-(2, 2, 1);
-
 -- Đơn hàng
 insert into don_hang (ma_nd, trang_thai, tong_tien, dia_chi_giao_hang)
 values
 (3, 'dang_giao', 39980000, '12 Lê Duẩn, Hải Châu, Đà Nẵng'),
 (4, 'cho_xac_nhan', 28990000, '100 Nguyễn Huệ, Quận 1, TP.HCM');
-
--- Chi tiết đơn hàng
-insert into chi_tiet_don_hang (ma_dh, ma_sp, so_luong, don_gia)
-values
-(1, 1, 1, 33990000),
-(1, 4, 1, 5990000),
-(2, 2, 1, 28990000);
 
 -- Thanh toán
 insert into thanh_toan (ma_dh, phuong_thuc, so_tien, trang_thai)
