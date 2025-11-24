@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Quản lý đơn hàng</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
+    nav { background: #343a40; color: white; padding: 1rem; }
+    .container { padding: 2rem; }
+    table { width: 100%; border-collapse: collapse; background: white; }
+    th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+    th { background: #007bff; color: white; }
+    tr:hover { background: #f1f1f1; }
+    input[type="text"] { padding: 8px; width: 250px; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 4px; }
+    button { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; }
+    .btn-info { background: #17a2b8; color: white; }
+    .btn-approve { background: #28a745; color: white; margin-left: 5px; }
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto;
+      background-color: rgba(0,0,0,0.4); }
+    .modal-content { background: white; margin: 10% auto; padding: 20px; border-radius: 5px; width: 50%; }
+    .close { float: right; font-size: 1.5rem; cursor: pointer; }
+  </style>
+</head>
+<body>
+<nav>Admin Dashboard</nav>
+<div class="container">
+  <input type="text" id="searchInput" placeholder="Tìm kiếm đơn hàng..." onkeyup="filterTable()">
+  <table id="orderTable">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Mã đơn hàng</th>
+      <th>Người đặt</th>
+      <th>Ngày đặt</th>
+      <th>Trạng thái</th>
+      <th>Tổng tiền</th>
+      <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody id="orderTableBody">
+    <!-- Dữ liệu sẽ được JS chèn vào -->
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal chi tiết đơn hàng -->
+<div id="orderModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h3>Chi tiết đơn hàng</h3>
+    <div id="orderDetails"></div>
+  </div>
+</div>
+
+<script>
+  const orders = [
+    {id: 1, ma: 'DH001', nguoi_dat: 'Nguyễn Văn A', ngay: '22/11/2025', trang_thai: 'Đang xử lý', tong: 1200000,
+      chi_tiet: [
+        {ten_sp: 'Sách A', sl: 2, gia: 200000},
+        {ten_sp: 'Sách B', sl: 1, gia: 800000}
+      ]
+    },
+    {id: 2, ma: 'DH002', nguoi_dat: 'Trần Thị B', ngay: '21/11/2025', trang_thai: 'Hoàn tất', tong: 850000,
+      chi_tiet: [
+        {ten_sp: 'Sách C', sl: 1, gia: 850000}
+      ]
+    },
+    {id: 3, ma: 'DH003', nguoi_dat: 'Phạm Văn C', ngay: '20/11/2025', trang_thai: 'Đang xử lý', tong: 950000,
+      chi_tiet: [
+        {ten_sp: 'Sách D', sl: 1, gia: 950000}
+      ]
+    }
+  ];
+
+  const tbody = document.getElementById('orderTableBody');
+
+  function renderTable(data) {
+    tbody.innerHTML = '';
+    data.forEach(order => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.ma}</td>
+                    <td>${order.nguoi_dat}</td>
+                    <td>${order.ngay}</td>
+                    <td>${order.trang_thai}</td>
+                    <td>${order.tong.toLocaleString()} VND</td>
+                    <td>
+                        <button class='btn-info' onclick='showDetails(${order.id})'>Xem chi tiết</button>
+                        ${order.trang_thai === 'Đang xử lý' ? `<button class='btn-approve' onclick='approveOrder(${order.id})'>Duyệt</button>` : ''}
+                    </td>
+                `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  renderTable(orders);
+
+  function filterTable() {
+    const input = document.getElementById('searchInput');
+    const filter = input.value.toUpperCase();
+    const filtered = orders.filter(order =>
+            order.ma.toUpperCase().includes(filter) ||
+            order.nguoi_dat.toUpperCase().includes(filter) ||
+            order.trang_thai.toUpperCase().includes(filter)
+    );
+    renderTable(filtered);
+  }
+
+  function showDetails(id) {
+    const order = orders.find(o => o.id === id);
+    const detailsDiv = document.getElementById('orderDetails');
+    detailsDiv.innerHTML = '<table style="width:100%; border-collapse: collapse;">' +
+            '<tr><th>Sản phẩm</th><th>Số lượng</th><th>Giá</th></tr>' +
+            order.chi_tiet.map(item => `<tr><td>${item.ten_sp}</td><td>${item.sl}</td><td>${item.gia.toLocaleString()} VND</td></tr>`).join('') +
+            '</table>';
+    document.getElementById('orderModal').style.display = 'block';
+  }
+
+  function closeModal() {
+    document.getElementById('orderModal').style.display = 'none';
+  }
+
+  function approveOrder(id) {
+    const order = orders.find(o => o.id === id);
+    if(order) {
+      order.trang_thai = 'Đã duyệt';
+      renderTable(orders);
+      alert(`Đơn hàng ${order.ma} đã được duyệt!`);
+    }
+  }
+
+  window.onclick = function(event) {
+    const modal = document.getElementById('orderModal');
+    if (event.target == modal) { modal.style.display = 'none'; }
+  }
+</script>
+</body>
+</html>
