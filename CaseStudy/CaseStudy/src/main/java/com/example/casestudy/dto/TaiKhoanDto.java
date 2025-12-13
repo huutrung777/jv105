@@ -1,4 +1,4 @@
-package com.example.casestudy.dao;
+package com.example.casestudy.dto;
 
 import com.example.casestudy.entity.TaiKhoan;
 import com.example.casestudy.util.ConnectDB;
@@ -7,24 +7,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class TaiKhoanDao {
+public class TaiKhoanDto {
     public boolean insertTaiKhoan(TaiKhoan taiKhoan) {
         String sql = "INSERT INTO tai_khoan(username, email, password, role) VALUES (?,?,?,?)";
         try (Connection connection = ConnectDB.getConnectDB();
              PreparedStatement ps = connection.prepareStatement(sql)) {
-
             ps.setString(1, taiKhoan.getUsername());
             ps.setString(2, taiKhoan.getEmail());
             ps.setString(3, taiKhoan.getPassword());
             ps.setString(4, taiKhoan.getRole());
-
             return ps.executeUpdate() > 0;
-
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-
     }
     public TaiKhoan login(String username, String password) {
         String sql = "SELECT * FROM tai_khoan WHERE username = ? AND password = ?";
@@ -45,7 +41,6 @@ public class TaiKhoanDao {
                 taiKhoan.setRole(rs.getString("role"));
                 return taiKhoan;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -54,7 +49,7 @@ public class TaiKhoanDao {
 
     }
     public TaiKhoan checkLogin(String username, String password) {
-        String sql = "SELECT id, username, password, email, role FROM users WHERE username=? AND password=?";
+        String sql = "SELECT id, username, password, email, role FROM tai_khoan  WHERE username=? AND password=?";
 
         try (Connection connection = ConnectDB.getConnectDB();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -69,13 +64,27 @@ public class TaiKhoanDao {
                 taiKhoan.setPassword(rs.getString("password"));
                 taiKhoan.setEmail(rs.getString("email"));
                 taiKhoan.setRole(rs.getString("role"));
-
                 return taiKhoan;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean existsByUsername(String username) {
+        String sql = "SELECT 1 FROM tai_khoan WHERE username = ?";
+        try (
+                Connection connection = ConnectDB.getConnectDB();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ) {
+            preparedStatement.setString(1, username);
+            ResultSet rs = preparedStatement.executeQuery();
+            return rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }
