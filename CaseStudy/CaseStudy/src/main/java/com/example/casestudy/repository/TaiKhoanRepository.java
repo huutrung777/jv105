@@ -1,5 +1,4 @@
 package com.example.casestudy.repository;
-
 import com.example.casestudy.entity.TaiKhoan;
 import com.example.casestudy.util.ConnectDB;
 
@@ -10,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaiKhoanRepository implements ITaiKhoanRepository{
+public class TaiKhoanRepository implements ITaiKhoanRepository {
     private final String SELECT_ALL = "select * from tai_khoan;";
     private final String INSERT_INTO = "insert into tai_khoan(username,password,email,role) values(?,?,?,?);";
     private final String DELETE_BY_ID = "delete from tai_khoan where id = ?;";
@@ -43,10 +42,10 @@ public class TaiKhoanRepository implements ITaiKhoanRepository{
     public boolean add(TaiKhoan taiKhoan) {
         try(Connection connection = ConnectDB.getConnectDB()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO);
-            preparedStatement.setString(1,taiKhoan.getUsername());
-            preparedStatement.setString(2,taiKhoan.getPassword());
-            preparedStatement.setString(3,taiKhoan.getEmail());
-            preparedStatement.setString(4,taiKhoan.getRole());
+            preparedStatement.setString(1, taiKhoan.getUsername());
+            preparedStatement.setString(2, taiKhoan.getPassword());
+            preparedStatement.setString(3, taiKhoan.getEmail());
+            preparedStatement.setString(4, taiKhoan.getRole());
             int effectRow = preparedStatement.executeUpdate();
             return effectRow==1;
         } catch (SQLException e) {

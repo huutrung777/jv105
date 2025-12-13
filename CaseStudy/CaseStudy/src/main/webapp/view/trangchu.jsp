@@ -13,12 +13,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TechStore - Siêu Thị Điện Thoại & Laptop</title>
-  <c:import url="../layout/css_trangchu.jsp"></c:import>
-  <c:import url="../layout/library.jsp"></c:import>
+  <c:import url="/view/layout/css_trangchu.jsp"></c:import>
+  <c:import url="/view/layout/library.jsp"></c:import>
 </head>
 <body>
 <%--header--%>
-<c:import url="../layout/navabr_trangchu.jsp"></c:import>
+<c:import url="/view/layout/navabr_trangchu.jsp"></c:import>
 <!-- Banner -->
 <div class="banner-slider">
   <div class="banner-slide">
@@ -56,6 +56,6 @@
 
 
 <!-- Footer -->
-<c:import url="../layout/footer_trangchu.jsp"></c:import>
+<c:import url="/view/layout/footer_trangchu.jsp"></c:import>
 </body>
 </html>

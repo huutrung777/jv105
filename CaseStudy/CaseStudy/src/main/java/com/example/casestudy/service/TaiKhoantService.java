@@ -1,12 +1,13 @@
 package com.example.casestudy.service;
 
+
 import com.example.casestudy.entity.TaiKhoan;
 import com.example.casestudy.repository.ITaiKhoanRepository;
 import com.example.casestudy.repository.TaiKhoanRepository;
 
 import java.util.List;
 
-public class TaiKhoanService implements ITaiKhoanService{
+public class TaiKhoantService implements ITaiKhoanService {
     ITaiKhoanRepository taiKhoanRepository=new TaiKhoanRepository();
     @Override
     public List<TaiKhoan> findAll() {
