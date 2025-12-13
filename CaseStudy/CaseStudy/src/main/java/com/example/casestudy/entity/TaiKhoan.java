@@ -1,14 +1,16 @@
 package com.example.casestudy.entity;
 
-public class Account {
+public class TaiKhoan {
     private int id;
     private String username;
     private String email;
     private String password;
     private String role;
-    public Account() {}
 
-    public Account(int id, String username, String email, String password, String role) {
+    public TaiKhoan() {
+    }
+
+    public TaiKhoan(int id, String username, String email, String password, String role) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -16,7 +18,7 @@ public class Account {
         this.role = role;
     }
 
-    public Account(String username, String email, String password, String role) {
+    public TaiKhoan(String username, String email, String password, String role) {
         this.username = username;
         this.email = email;
         this.password = password;

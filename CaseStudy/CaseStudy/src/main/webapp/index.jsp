@@ -6,7 +6,7 @@
     <title>JSP - Hello World</title>
 </head>
 <body>
-<c:redirect url="/view/login.jsp"/>
+<c:redirect url="/view/trangchu.jsp"/>
 <h1><%= "Hello World!" %>
 </h1>
 <br/>

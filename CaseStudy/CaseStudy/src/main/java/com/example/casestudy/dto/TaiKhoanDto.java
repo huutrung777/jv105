@@ -1,28 +1,28 @@
 package com.example.casestudy.dto;
 
-import com.example.casestudy.entity.Account;
+import com.example.casestudy.entity.TaiKhoan;
 import com.example.casestudy.util.ConnectDB;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class AccountDto {
-    public boolean insertTaiKhoan(Account account) {
+public class TaiKhoanDto {
+    public boolean insertTaiKhoan(TaiKhoan taiKhoan) {
         String sql = "INSERT INTO tai_khoan(username, email, password, role) VALUES (?,?,?,?)";
         try (Connection connection = ConnectDB.getConnectDB();
              PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, account.getUsername());
-            ps.setString(2, account.getEmail());
-            ps.setString(3, account.getPassword());
-            ps.setString(4, account.getRole());
+            ps.setString(1, taiKhoan.getUsername());
+            ps.setString(2, taiKhoan.getEmail());
+            ps.setString(3, taiKhoan.getPassword());
+            ps.setString(4, taiKhoan.getRole());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
-    public Account login(String username, String password) {
+    public TaiKhoan login(String username, String password) {
         String sql = "SELECT * FROM tai_khoan WHERE username = ? AND password = ?";
         try (Connection connection = ConnectDB.getConnectDB();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -33,13 +33,13 @@ public class AccountDto {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                Account account = new Account();
-                account.setId(rs.getInt("id"));
-                account.setUsername(rs.getString("username"));
-                account.setEmail(rs.getString("email"));
-                account.setPassword(rs.getString("password"));
-                account.setRole(rs.getString("role"));
-                return account;
+                TaiKhoan taiKhoan = new TaiKhoan();
+                taiKhoan.setId(rs.getInt("id"));
+                taiKhoan.setUsername(rs.getString("username"));
+                taiKhoan.setEmail(rs.getString("email"));
+                taiKhoan.setPassword(rs.getString("password"));
+                taiKhoan.setRole(rs.getString("role"));
+                return taiKhoan;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,7 +48,7 @@ public class AccountDto {
 
 
     }
-    public Account checkLogin(String username, String password) {
+    public TaiKhoan checkLogin(String username, String password) {
         String sql = "SELECT id, username, password, email, role FROM tai_khoan  WHERE username=? AND password=?";
 
         try (Connection connection = ConnectDB.getConnectDB();
@@ -58,13 +58,13 @@ public class AccountDto {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                Account account = new Account();
-                account.setId(rs.getInt("id"));
-                account.setUsername(rs.getString("username"));
-                account.setPassword(rs.getString("password"));
-                account.setEmail(rs.getString("email"));
-                account.setRole(rs.getString("role"));
-                return account;
+                TaiKhoan taiKhoan = new TaiKhoan();
+                taiKhoan.setId(rs.getInt("id"));
+                taiKhoan.setUsername(rs.getString("username"));
+                taiKhoan.setPassword(rs.getString("password"));
+                taiKhoan.setEmail(rs.getString("email"));
+                taiKhoan.setRole(rs.getString("role"));
+                return taiKhoan;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,4 +86,5 @@ public class AccountDto {
         }
         return false;
     }
+
 }

@@ -33,11 +33,11 @@
     </div>
 
     <div class="header-actions">
-      <a href="cart.html" class="header-btn">
+      <a href="/view/register.jsp" class="header-btn">
         <span class="header-btn-icon">📝<span class="cart-badge"></span></span>
         <span>Đăng ký</span>
       </a>
-      <a href="login.html" class="header-btn">
+      <a href="/view/login.jsp" class="header-btn">
         <span class="header-btn-icon">👤</span>
         <span>Đăng nhập</span>
       </a>

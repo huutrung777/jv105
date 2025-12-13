@@ -1,8 +1,8 @@
 package com.example.casestudy.controller;
 
-import com.example.casestudy.entity.Account;
-import com.example.casestudy.service.IAccountService;
-import com.example.casestudy.service.AccountService;
+import com.example.casestudy.entity.TaiKhoan;
+import com.example.casestudy.service.ITaiKhoanService;
+import com.example.casestudy.service.TaiKhoantService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,9 +13,9 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
 
-@WebServlet(name = "TaiKhoanController",value = "/taikhoans")
-public class AccountController extends HttpServlet {
-    private IAccountService taiKhoanService = new AccountService();
+@WebServlet(name = "AccountController",value = "/taikhoans")
+public class TaiKhoanController extends HttpServlet {
+    private ITaiKhoanService taiKhoanService = new TaiKhoantService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -41,8 +41,8 @@ public class AccountController extends HttpServlet {
     }
 
     private void showList(HttpServletRequest req, HttpServletResponse resp) {
-        List<Account> accountList = taiKhoanService.findAll();
-        req.setAttribute("taiKhoanList", accountList);
+        List<TaiKhoan> taiKhoanList = taiKhoanService.findAll();
+        req.setAttribute("taiKhoanList", taiKhoanList);
         try {
             req.getRequestDispatcher("/view/taikhoan/action/list.jsp").forward(req,resp);
         } catch (ServletException e) {
@@ -55,9 +55,9 @@ public class AccountController extends HttpServlet {
 
     private void showFormEdit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
-        Account account = taiKhoanService.findById(id);
-        if (account != null) {
-            req.setAttribute("taiKhoan", account);
+        TaiKhoan taiKhoan = taiKhoanService.findById(id);
+        if (taiKhoan != null) {
+            req.setAttribute("taiKhoan", taiKhoan);
             req.getRequestDispatcher("/view/taikhoan/action/edit.jsp").forward(req, resp);
         } else {
             resp.sendRedirect("/taikhoans?mess=" + URLEncoder.encode("Tài khoản không tồn tại", "UTF-8"));
@@ -68,10 +68,10 @@ public class AccountController extends HttpServlet {
     private void findById(HttpServletRequest req, HttpServletResponse resp) {
         int id = Integer.parseInt(req.getParameter("id"));
 
-        Account account = taiKhoanService.findById(id);
+        TaiKhoan taiKhoan = taiKhoanService.findById(id);
 
-        if (account != null) {
-            req.setAttribute("userList", java.util.List.of(account));
+        if (taiKhoan != null) {
+            req.setAttribute("userList", java.util.List.of(taiKhoan));
             req.setAttribute("mess", "Tìm thấy sinh viên ID: " + id);
         } else {
             req.setAttribute("userList", java.util.List.of());
@@ -141,8 +141,8 @@ public class AccountController extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         String role = req.getParameter("role");
-        Account account = new Account(username, email, password, role);
-        boolean isSuccess = taiKhoanService.update(account);
+        TaiKhoan taiKhoan = new TaiKhoan(username, email, password, role);
+        boolean isSuccess = taiKhoanService.update(taiKhoan);
         String mess = isSuccess ? "Cập nhật thành công" : "Cập nhật thất bại";
         resp.sendRedirect("/users?mess=" + URLEncoder.encode(mess, "UTF-8"));
     }
@@ -152,8 +152,8 @@ public class AccountController extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         String role = req.getParameter("role");
-        Account account = new Account(username, email, password, role);
-        boolean isSuccess = taiKhoanService.add(account);
+        TaiKhoan taiKhoan = new TaiKhoan(username, email, password, role);
+        boolean isSuccess = taiKhoanService.add(taiKhoan);
         String mess = isSuccess? "Them moi thanh cong":"Them moi that bai";
         try {
             resp.sendRedirect("/taikhoans?mess="+ mess);

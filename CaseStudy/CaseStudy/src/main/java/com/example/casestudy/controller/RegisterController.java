@@ -1,7 +1,7 @@
 package com.example.casestudy.controller;
 
-import com.example.casestudy.dto.AccountDto;
-import com.example.casestudy.entity.Account;
+import com.example.casestudy.dto.TaiKhoanDto;
+import com.example.casestudy.entity.TaiKhoan;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,7 +13,7 @@ import java.io.IOException;
 @WebServlet(name = "RegisterController", value = "/register")
 public class RegisterController extends HttpServlet {
 
-    private AccountDto accountDto = new AccountDto();
+    private TaiKhoanDto taiKhoanDto = new TaiKhoanDto();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -27,13 +27,13 @@ public class RegisterController extends HttpServlet {
             req.getRequestDispatcher("/view/register.jsp").forward(req, resp);
             return;
         }
-        if (accountDto.existsByUsername(username)) {
+        if (taiKhoanDto.existsByUsername(username)) {
             req.setAttribute("message", "Tên đăng nhập đã tồn tại!");
             req.getRequestDispatcher("/view/register.jsp").forward(req, resp);
             return;
         }
-        Account account = new Account(username, email, password, "khachhang");
-        boolean ok = accountDto.insertTaiKhoan(account);
+        TaiKhoan taiKhoan = new TaiKhoan(username, email, password, "khachhang");
+        boolean ok = taiKhoanDto.insertTaiKhoan(taiKhoan);
         if (ok) {
             resp.sendRedirect("/view/login.jsp");
         } else {
