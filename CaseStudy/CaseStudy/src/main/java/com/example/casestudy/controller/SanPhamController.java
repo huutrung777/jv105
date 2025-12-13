@@ -29,16 +29,16 @@ public class SanPhamController extends HttpServlet {
         switch (action) {
             case "home":
                 req.setAttribute("sanPhamList", sanPhamService.findAll());
-                req.getRequestDispatcher("/view/user/trangchu.jsp").forward(req, resp);
+                req.getRequestDispatcher("/view/trangchu.jsp").forward(req, resp);
                 break;
 
             case "admin":
                 req.setAttribute("sanPhamList", sanPhamService.findAll());
-                req.getRequestDispatcher("/view/admin/sanpham.jsp").forward(req, resp);
+                req.getRequestDispatcher("/view/admin/sanpham/sanpham.jsp").forward(req, resp);
                 break;
 
             case "add":
-                req.getRequestDispatcher("/view/admin/add_sanpham.jsp").forward(req, resp);
+                req.getRequestDispatcher("/view/admin/sanpham/add_sanpham.jsp").forward(req, resp);
                 break;
             case "edit":
                 int maSpEdit =Integer.parseInt(req.getParameter("maSp"));
@@ -53,7 +53,7 @@ public class SanPhamController extends HttpServlet {
     private void showFormAdd(HttpServletRequest req, HttpServletResponse resp) {
         try {
             req.setAttribute("sanPhamList",sanPhamService.findAll());
-            req.getRequestDispatcher("/view/admin/add_sanpham.jsp").forward(req,resp);
+            req.getRequestDispatcher("/view/admin/sanpham/add_sanpham.jsp").forward(req,resp);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

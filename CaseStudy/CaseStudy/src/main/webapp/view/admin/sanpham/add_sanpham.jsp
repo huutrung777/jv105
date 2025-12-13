@@ -214,13 +214,13 @@
       background: linear-gradient(135deg, #5568d3 0%, #663a8b 100%);
     }
   </style>
-  <c:import url="../layout/library.jsp"/>
+  <c:import url="../../layout/library.jsp"/>
 </head>
 
 <body>
 <div class="container mt-3">
   <div class="row">
-    <c:import url="../layout/navbar_admin.jsp"/>
+    <c:import url="../../layout/navbar_admin.jsp"/>
   </div>
 
   <div class="row">
