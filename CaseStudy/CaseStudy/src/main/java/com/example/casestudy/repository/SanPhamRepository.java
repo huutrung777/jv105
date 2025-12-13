@@ -10,12 +10,12 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SanPhamRepository implements ISanPhamRepository{
+public class SanPhamRepository implements ISanPhamRepository {
     @Override
     public List<SanPham> findAll() {
         List<SanPham> sanPhamList = new ArrayList<>();
         try (Connection connection = ConnectDB.getConnectDB()) {
-            PreparedStatement preparedStatement =connection.prepareStatement("SELECT * FROM san_pham");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM san_pham");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 SanPham sanPham = new SanPham();
@@ -32,6 +32,30 @@ public class SanPhamRepository implements ISanPhamRepository{
         }
         return sanPhamList;
     }
+
+    @Override
+    public SanPham findById(int maSp) {
+        try (Connection connection = ConnectDB.getConnectDB();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("SELECT * FROM san_pham WHERE ma_sp = ?")) {
+            preparedStatement.setInt(1, maSp);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                SanPham sanPham = new SanPham();
+                sanPham.setMaSp(resultSet.getInt("ma_sp"));
+                sanPham.setTenSp(resultSet.getString("ten_sp"));
+                sanPham.setMoTa(resultSet.getString("mo_ta"));
+                sanPham.setGia(resultSet.getDouble("gia"));
+                sanPham.setSoLuong(resultSet.getInt("so_luong"));
+                sanPham.setAnh(resultSet.getString("img"));
+                return sanPham;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     @Override
     public boolean add(SanPham sanPham) {
@@ -55,11 +79,22 @@ public class SanPhamRepository implements ISanPhamRepository{
 
     @Override
     public boolean update(SanPham sanPham) {
+        try (Connection connection = ConnectDB.getConnectDB()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE san_pham  SET ten_sp=?, mo_ta=?,gia=?,so_luong=?,img=? WHERE ma_sp=?");
+            preparedStatement.setString(1, sanPham.getTenSp());
+            preparedStatement.setString(2, sanPham.getMoTa());
+            preparedStatement.setDouble(3, sanPham.getGia());
+            preparedStatement.setInt(4, sanPham.getSoLuong());
+            preparedStatement.setString(5, sanPham.getAnh());
+            return preparedStatement.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Lỗi truy vấn dữ liệu (update)");
+        }
         return false;
     }
 
     @Override
-    public boolean delete(int id) {
+    public boolean delete(int maSp) {
         return false;
     }
 

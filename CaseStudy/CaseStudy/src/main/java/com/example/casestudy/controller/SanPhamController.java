@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+
 @WebServlet(name = "sanphamcontroller", value = "/san-pham")
 public class SanPhamController extends HttpServlet {
 
@@ -22,7 +23,7 @@ public class SanPhamController extends HttpServlet {
 
         String action = req.getParameter("action");
         if (action == null) {
-            action = "home"; 
+            action = "home";
         }
 
         switch (action) {
@@ -39,7 +40,9 @@ public class SanPhamController extends HttpServlet {
             case "add":
                 req.getRequestDispatcher("/view/admin/add_sanpham.jsp").forward(req, resp);
                 break;
-
+            case "edit":
+                int maSpEdit =Integer.parseInt(req.getParameter("maSp"));
+                SanPham sanPham = sanPhamService.findById(maSpEdit);
             default:
                 resp.sendRedirect("/san-pham?action=home");
                 break;
@@ -81,6 +84,26 @@ public class SanPhamController extends HttpServlet {
         switch (action){
             case "add":
                 save(req,resp);
+                break;
+            case "update":
+                update(req,resp);
+                break;
+        }
+    }
+
+    private void update(HttpServletRequest req, HttpServletResponse resp) {
+        int maSP = Integer.parseInt(req.getParameter("maSp"));
+        String tenSP = req.getParameter("tenSp");
+        String moTa = req.getParameter("moTa");
+        Double gia = Double.parseDouble(req.getParameter("gia"));
+        int soLuong = Integer.parseInt(req.getParameter("soLuong"));
+        String anh = req.getParameter("anh");
+        SanPham sanPham = new SanPham(maSP,tenSP,moTa,gia,soLuong,anh);
+        sanPhamService.update(sanPham);
+        try {
+            resp.sendRedirect("/san-pham?action=admin");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
