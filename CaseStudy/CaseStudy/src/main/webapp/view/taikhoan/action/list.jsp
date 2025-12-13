@@ -14,8 +14,8 @@
 </head>
 <body>
 <c:import url="/view/layout/navbar_admin.jsp"/>
-<h1>Student List</h1>
-<a class="btn btn-sm btn-success" href="/taikhoans?action=add">Add new student</a>
+<h1>Quản Lý Tài Khoản</h1>
+<a class="btn btn-sm btn-success" href="/taikhoans?action=add">Thêm mới tài khoản</a>
 <h2>${param.mess}</h2>
 <form action="/taikhoans" method="get" class="mb-3">
     <input type="hidden" name="action" value="find">
@@ -33,40 +33,43 @@
         <th>Update</th>
         <th>Delete</th>
     </tr>
-    <c:forEach var="account" items="${accountList}" varStatus="status">
+    <c:forEach var="taikhoan" items="${taiKhoanList}">
         <tr>
-            <td>${user.id}</td>
-            <td>${user.username}</td>
-            <td>${user.password}</td>
-            <td>${user.email}</td>
-            <td>${user.role}</td>
-
+            <td>${taikhoan.id}</td>
+            <td>${taikhoan.username}</td>
+            <td>${taikhoan.password}</td>
+            <td>${taikhoan.email}</td>
+            <td>${taikhoan.role}</td>
+            <td>
+                <a href="/taikhoans?action=edit&id=${taikhoan.id}"
+                   class="btn btn-warning btn-sm">Update</a>
             </td>
             <td>
-                <button onclick="getInfoToDelete('${student.id}','${student.name}')" type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button"
+                        class="btn btn-danger btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                        onclick="getInfoToDelete('${taikhoan.id}','${taikhoan.username}')">
                     Delete
                 </button>
             </td>
-            <td>
-                <a href="/students?action=edit&id=${student.id}" class="btn btn-warning btn-sm">Update</a>
-
-            </td>
-
         </tr>
-
     </c:forEach>
+
     <tr>
-        <c:if test="${studentList.isEmpty()}">
-            <td colspan="6">Danh sách trống</td>
-        </c:if>
+        <c:if test="${empty taiKhoanList}">
+    <tr>
+        <td colspan="7">Danh sách trống</td>
+    </tr>
+    </c:if>
+
 
     </tr>
 </table>
-<!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="/students?action=delete" method="post">
+            <form action="/taikhoans?action=delete" method="post">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

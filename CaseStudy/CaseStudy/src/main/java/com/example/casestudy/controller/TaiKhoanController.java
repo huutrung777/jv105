@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
 
-@WebServlet(name = "AccountController",value = "/taikhoans")
+@WebServlet(name = "TaiKhoanController",value = "/taikhoans")
 public class TaiKhoanController extends HttpServlet {
     private ITaiKhoanService taiKhoanService = new TaiKhoantService();
 
