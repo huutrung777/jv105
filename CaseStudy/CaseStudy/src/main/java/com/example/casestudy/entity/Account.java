@@ -1,25 +1,25 @@
 package com.example.casestudy.entity;
 
-public class TaiKhoan {
+public class Account {
     private int id;
     private String username;
+    private String email;
     private String password;
-    private  String email;
     private String role;
-    public TaiKhoan() {}
+    public Account() {}
 
-    public TaiKhoan(int id, String username, String password, String email, String role) {
+    public Account(int id, String username, String email, String password, String role) {
         this.id = id;
         this.username = username;
-        this.password = password;
         this.email = email;
+        this.password = password;
         this.role = role;
     }
 
-    public TaiKhoan(String username, String password, String email, String role) {
+    public Account(String username, String email, String password, String role) {
         this.username = username;
-        this.password = password;
         this.email = email;
+        this.password = password;
         this.role = role;
     }
 
@@ -39,20 +39,20 @@ public class TaiKhoan {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getRole() {
