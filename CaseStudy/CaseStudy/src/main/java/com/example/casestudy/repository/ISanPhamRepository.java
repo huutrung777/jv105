@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface ISanPhamRepository {
     List<SanPham> findAll();
+    SanPham findById(int id);
     boolean add(SanPham sanPham);
     boolean update(SanPham sanPham);
     boolean delete(int id);

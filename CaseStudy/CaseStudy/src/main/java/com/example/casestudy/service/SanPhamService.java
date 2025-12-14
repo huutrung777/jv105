@@ -14,6 +14,11 @@ public class SanPhamService implements ISanPhamService{
     }
 
     @Override
+    public SanPham getSanPhamById(int id) {
+        return sanPhamRepository.findById(id);
+    }
+
+    @Override
     public boolean add(SanPham sanPham) {
         return sanPhamRepository.add(sanPham);
     }

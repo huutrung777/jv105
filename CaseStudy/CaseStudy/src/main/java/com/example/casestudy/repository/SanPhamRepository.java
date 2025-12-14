@@ -34,6 +34,28 @@ public class SanPhamRepository implements ISanPhamRepository{
     }
 
     @Override
+    public SanPham findById(int id) {
+        try (Connection connection = ConnectDB.getConnectDB()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM san_pham WHERE ma_sp = ?");
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                SanPham sanPham = new SanPham();
+                sanPham.setMaSp(resultSet.getInt("ma_sp"));
+                sanPham.setTenSp(resultSet.getString("ten_sp"));
+                sanPham.setMoTa(resultSet.getString("mo_ta"));
+                sanPham.setGia(resultSet.getDouble("gia"));
+                sanPham.setSoLuong(resultSet.getInt("so_luong"));
+                sanPham.setAnh(resultSet.getString("img"));
+                return sanPham;
+            }
+        } catch (Exception e) {
+            System.out.println("Loi truy van csdl (findById)");
+        }
+        return null;
+    }
+
+    @Override
     public boolean add(SanPham sanPham) {
         try (Connection connection = ConnectDB.getConnectDB()) {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO san_pham (ten_sp, mo_ta, gia, so_luong, img) VALUES (?,?,?,?,?)");

@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface ISanPhamService {
     List<SanPham> findAll();
+    SanPham getSanPhamById(int id);
     boolean add(SanPham sanPham);
     boolean update(SanPham sanPham);
     boolean delete(int id);
